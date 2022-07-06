@@ -22,8 +22,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
     font-family: 'Patrick Hand', cursive;
+    color: white;
 }
 
 .bookshelf {
@@ -88,7 +88,7 @@ body {
     content: url('./img/yellow-car.svg');
     width: 60px;
     left: -90px;
-    bottom: -24px;
+    bottom: -26px;
 }
 
 .shelf:nth-of-type(odd) {
@@ -105,7 +105,6 @@ body {
 
 .book {
     background: #f9b931;
-    color: white;
     padding: 5px 0;
     font-family: 'Roboto', sans-serif;
     font-size: .8rem;
@@ -125,9 +124,117 @@ body {
     font-size: 40px;
     margin-top: 10px;
     transition: all .2s ease-in-out;
-    cursor: pointer;
 }
 
 .add-book:hover {
     transform: scale(1.1);
+}
+
+.book, 
+.add-book,
+button,
+.close-button {
+    cursor: pointer;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal-content {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: var(--dark-color);
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    border-radius: 0.5rem;
+}
+
+.close-button {
+    float: right;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+}
+
+.close-button:hover {
+    color: black;
+}
+
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+/* MODAL CONTENT */
+
+h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+input,
+label,
+button {
+    font-family: inherit;
+    font-size: 2rem;
+}
+
+input[type=text],
+input[type=number] {
+    width: 80%;
+    background: var(--shelf-dark-color);
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+
+input[type=checkbox] {
+    width: 25px;
+    height: 25px;
+}
+
+button {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 10px;
+    background-color: white;
+    border: 2px solid var(--dark-color);
+
+}
+
+button:hover {
+    background: var(--dark-color);
+    color: white;
+}
+
+form div,
+button {
+    margin-top: 20px;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }

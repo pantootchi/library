@@ -23,5 +23,37 @@
     </div>
 
     <div class="add-book">+ Add a Book</div>
+
+    <!-- Used as the opaque background -->
+    <div class="modal">
+        <!-- The actual modal -->
+        <div class="modal-content">
+            <span class="close-button">✘</span>
+            <h1>Add a new book</h1>
+            <form>
+                <div>
+                    <label for="title"></label>
+                    <input type="text" name="title" id="title" placeholder="Title" required>
+                </div>
+
+                <div>
+                    <label for="author"></label>
+                    <input type="text" name="author" id="author" placeholder="Author" required>
+                </div>
+
+                <div>
+                    <label for="pages"></label>
+                    <input type="number" name="pages" id="pages" placeholder="Pages" required>
+                </div>
+
+                <div class="checkbox">
+                    <label for="read">Have you read it?</label>
+                    <input type="checkbox" name="read" id="read">
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
