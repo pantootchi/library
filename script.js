@@ -2,8 +2,7 @@ const addButton = document.querySelector('.add-button');
 const shelves = document.querySelectorAll('.shelf');
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-button");
-const submitButton = document.querySelector("button");
-const inputValue = document.querySelectorAll('input');
+const addBookForm = document.getElementById("addBookForm");
 
 const FULL_SHELF = 22;
 
@@ -33,24 +32,17 @@ function Book (title, author, pages, read, id) {
     this.id = id
 }
 
-submitButton.addEventListener("click", addBookToLibrary)
+// onsubmit event occurs when a form is successfully submitted
+// same as addBookForm.onsubmit = addBookToLibrary
+addBookForm.addEventListener("submit", addBookToLibrary);
 
-function addBookToLibrary() {
-    // Put inputted values into an array
-    let arguments = []
-
-    inputValue.forEach((arg) => {
-        if (arg.type == "checkbox") {
-            arguments.push(arg.checked);
-        } else {
-            arguments.push(arg.value);
-        }
-    })
-
-    arguments.push(bookCounter += 1);
+// e is the reference for event object which will be passed to event handlers.
+function addBookToLibrary(e) {
+    // Stops form from submitting values
+    e.preventDefault();
 
     // Create new Book object
-    const newBook = new Book(...arguments);
+    const newBook = createBookObject();
 
     // Add new Book object to myLibrary array
     myLibrary.push(newBook)
@@ -62,6 +54,16 @@ function addBookToLibrary() {
     toggleModal();
 }
 
+function createBookObject() {
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const pages = document.getElementById('pages').value;
+    const read = document.getElementById('read').checked;
+    const id = bookCounter += 1;
+
+    return new Book(title, author, pages, read, id);
+}
+
 function generateRGB() {
     let R = Math.floor(Math.random() * 255);
     let G = Math.floor(Math.random() * 255);
@@ -70,12 +72,14 @@ function generateRGB() {
 }
 
 function displayBook(bookObj) {
+    // Create new Book element
     const bookElement = document.createElement('span');
     bookElement.textContent = bookObj.title;
     bookElement.classList.add("book");
     bookElement.setAttribute('id', bookObj.id)
     bookElement.style.backgroundColor = generateRGB();
 
+    // Append new Book element to the DOM
     for (i = 0; i < shelves.length; i++) {
         if (shelves[i].children.length != FULL_SHELF) {
             shelves[i].appendChild(bookElement);
