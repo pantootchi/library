@@ -12,13 +12,20 @@ body {
     --light-color: #f8f2e6;
 }
 
-body {
+body,
+h1,
+h2,
+p {
     margin: 0;
+}
+
+body {
     background: var(--dark-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
     font-family: 'Patrick Hand', cursive;
     color: white;
 }
@@ -118,7 +125,6 @@ body {
 
 .add-button {
     font-size: 40px;
-    margin-top: 10px;
     transition: all .2s ease-in-out;
 }
 
@@ -135,7 +141,8 @@ button,
 
 /* MODAL */
 
-.modal {
+.modal,
+.book-modal {
     position: fixed;
     left: 0;
     top: 0;
@@ -183,7 +190,6 @@ button,
 
 h1 {
     font-size: 3rem;
-    margin: 0;
 }
 
 input,
@@ -201,6 +207,13 @@ input[type=number] {
     border: none;
     outline: none;
     padding: 10px;
+}
+
+label[for=title],
+label[for=author],
+label[for=pages] {
+    opacity: 0;
+    position: absolute;
 }
 
 input[type=checkbox] {
@@ -233,4 +246,15 @@ button {
     justify-content: center;
     align-items: center;
     gap: 15px;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-sub-info {
+    display: flex;
+    gap: 20px;
 }
