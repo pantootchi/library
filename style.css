@@ -1,1 +1,133 @@
-Placeholder
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto&display=swap');
+
+html,
+body {
+    height: 100%;
+}
+
+:root {
+    --main-color: #f9b931;
+    --secondary-color: #426f86;
+    --tertiary-color: #f0810e;
+    --shelf-color: #ffffff;
+    --shelf-dark-color: #f1f1f1;
+    --dark-color: #2f3130;
+    --light-color: #f8f2e6;
+}
+
+body {
+    margin: 0;
+    background: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Patrick Hand', cursive;
+}
+
+.bookshelf {
+    width: 500px;
+    height: 800px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.shelf {
+    background: var(--shelf-dark-color);
+    border: 12px solid var(--shelf-color);
+    display: flex;
+    align-items: end;
+    position: relative;
+}
+
+.shelf:first-child::before,
+.shelf:last-child::before {
+    content: '';
+    position: absolute;
+    height: 12px;
+    width: 100px;
+    right: -112px;
+    top: -12px;
+    background: var(--shelf-color);
+}
+
+.shelf:last-child::before {
+    top: 136px;
+}
+
+.shelf:nth-of-type(odd)::after {
+    content: url('./img/books.svg');
+    width: 80px;
+    height: auto;
+    position: absolute;
+    right: -100px;
+    bottom: -18px;
+}
+
+.shelf:nth-child(3)::after {
+    content: url('./img/hourglass.svg');
+}
+
+.shelf:last-child::after {
+    content: url('./img/red-bag.svg');
+    bottom: -10px;
+}
+
+.shelf:nth-of-type(even)::after {
+    content: url('./img/plant.svg');
+    width: 100px;
+    height: auto;
+    position: absolute;
+    left: -115px;
+    bottom: -18px;
+}
+
+.shelf:nth-child(4)::after {
+    content: url('./img/yellow-car.svg');
+    width: 60px;
+    left: -90px;
+    bottom: -24px;
+}
+
+.shelf:nth-of-type(odd) {
+    grid-column: 1 / 9;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.shelf:nth-of-type(even) {
+    grid-column: 3 / 11;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.book {
+    background: #f9b931;
+    color: white;
+    padding: 5px 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: .8rem;
+    border: .5px solid black;
+    
+    text-align: center;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-height: 110px;
+}
+
+.add-book {
+    font-size: 40px;
+    margin-top: 10px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+
+.add-book:hover {
+    transform: scale(1.1);
+}
