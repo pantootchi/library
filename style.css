@@ -6,9 +6,6 @@ body {
 }
 
 :root {
-    --main-color: #f9b931;
-    --secondary-color: #426f86;
-    --tertiary-color: #f0810e;
     --shelf-color: #ffffff;
     --shelf-dark-color: #f1f1f1;
     --dark-color: #2f3130;
@@ -104,7 +101,6 @@ body {
 }
 
 .book {
-    background: #f9b931;
     padding: 5px 0;
     font-family: 'Roboto', sans-serif;
     font-size: .8rem;
@@ -120,18 +116,18 @@ body {
     max-height: 110px;
 }
 
-.add-book {
+.add-button {
     font-size: 40px;
     margin-top: 10px;
     transition: all .2s ease-in-out;
 }
 
-.add-book:hover {
+.add-button:hover {
     transform: scale(1.1);
 }
 
 .book, 
-.add-book,
+.add-button,
 button,
 .close-button {
     cursor: pointer;

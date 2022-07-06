@@ -1,7 +1,11 @@
-const addBook = document.querySelector('.add-book');
+const addButton = document.querySelector('.add-button');
 const shelves = document.querySelectorAll('.shelf');
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close-button");
+const submitButton = document.querySelector("button");
+const inputValue = document.querySelectorAll('input');
+
+const FULL_SHELF = 22;
 
 // MODAL 
 function toggleModal() {
@@ -14,6 +18,62 @@ function windowOnClick(event) {
     }
 }
 
-addBook.addEventListener("click", toggleModal);
+addButton.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
 window.addEventListener("click", windowOnClick);
+
+let myLibrary = [];
+
+function Book (title, author, pages, read) {
+    this.title = title
+    this.author = author
+    this.pages = pages
+    this.read = read
+}
+
+submitButton.addEventListener("click", addBookToLibrary)
+
+function addBookToLibrary() {
+    // Put inputted values into an array
+    let arguments = []
+    inputValue.forEach((arg) => {
+        if (arg.type == "checkbox") {
+            arguments.push(arg.checked);
+        } else {
+            arguments.push(arg.value);
+        }
+    })
+
+    // Create new Book object
+    const newBook = new Book(...arguments);
+
+    // Add new Book object to myLibrary array
+    myLibrary.push(newBook)
+    
+    // Visually display new Book object
+    displayBook(newBook);
+
+    // Close modal
+    toggleModal();
+}
+
+function generateRGB() {
+    let R = Math.floor(Math.random() * 255);
+    let G = Math.floor(Math.random() * 255);
+    let B = Math.floor(Math.random() * 255);
+    return `rgb(${R}, ${G}, ${B})`;
+}
+
+function displayBook(bookObj) {
+    const bookElement = document.createElement('span');
+    bookElement.textContent = bookObj.title;
+    bookElement.classList.add("book");
+    bookElement.style.backgroundColor = generateRGB();
+
+    for (i = 0; i < shelves.length; i++) {
+        if (shelves[i].children.length != FULL_SHELF) {
+            shelves[i].appendChild(bookElement);
+            break;
+        }
+    }
+}
