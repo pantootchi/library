@@ -23,12 +23,14 @@ closeButton.addEventListener("click", toggleModal);
 window.addEventListener("click", windowOnClick);
 
 let myLibrary = [];
+let bookCounter = 0;
 
-function Book (title, author, pages, read) {
+function Book (title, author, pages, read, id) {
     this.title = title
     this.author = author
     this.pages = pages
     this.read = read
+    this.id = id
 }
 
 submitButton.addEventListener("click", addBookToLibrary)
@@ -36,6 +38,7 @@ submitButton.addEventListener("click", addBookToLibrary)
 function addBookToLibrary() {
     // Put inputted values into an array
     let arguments = []
+
     inputValue.forEach((arg) => {
         if (arg.type == "checkbox") {
             arguments.push(arg.checked);
@@ -43,6 +46,8 @@ function addBookToLibrary() {
             arguments.push(arg.value);
         }
     })
+
+    arguments.push(bookCounter += 1);
 
     // Create new Book object
     const newBook = new Book(...arguments);
@@ -68,6 +73,7 @@ function displayBook(bookObj) {
     const bookElement = document.createElement('span');
     bookElement.textContent = bookObj.title;
     bookElement.classList.add("book");
+    bookElement.setAttribute('id', bookObj.id)
     bookElement.style.backgroundColor = generateRGB();
 
     for (i = 0; i < shelves.length; i++) {
