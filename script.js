@@ -9,6 +9,8 @@ const libraryModal = document.querySelector(".library-modal");
 const bookInfo = document.querySelector(".book-info");
 const removeButton = document.querySelector('.remove');
 const libraryTitle = document.querySelector('body > h1');
+const tableContainer = document.querySelector('.table-container');
+const tBody = document.querySelector('tbody');
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -70,22 +72,22 @@ function addBookToLibrary(e) {
     toggleFormModal();
 }
 
-function Book (title, author, pages, read, id) {
+function Book (title, author, pages, id, read) {
     this.title = title
     this.author = author
     this.pages = pages
-    this.read = read
     this.id = id
+    this.read = read
 }
 
 function createBookObject() {
     const title = document.getElementById('title').value;
     const author = document.getElementById('author').value;
     const pages = document.getElementById('pages').value;
-    const read = document.getElementById('read').checked;
     const id = bookCounter += 1;
+    const read = document.getElementById('read').checked;
 
-    return new Book(title, author, pages, read, id);
+    return new Book(title, author, pages, id, read);
 }
 
 function generateRGB() {
@@ -211,7 +213,37 @@ function removeBookFromLibrary() {
 libraryTitle.addEventListener("click", openLibraryModal);
 
 function openLibraryModal() {
+    // Reset Table's Content
+    tBody.textContent = '';
+    // Removes "No Book" error
+    if (tableContainer.lastChild.nodeType == 1) {
+        tableContainer.lastChild.remove();
+    }
+    // Generate Library Modal's Content
+    generateBookList();
+    // Open Library Modal
     libraryModal.classList.add('show-modal');
+}
+
+function generateBookList() {
+    if (myLibrary.length  > 0) {
+        for (let book = 0; book < myLibrary.length; book++) {
+            const newRow = document.createElement('tr');
+
+            for(let value = 0; value < 5; value++) {
+                const newCell = document.createElement('td');
+                newCell.textContent = Object.values(myLibrary[book])[value];
+
+                tBody.appendChild(newRow);
+                newRow.appendChild(newCell);
+            }
+        }
+    } else {
+        const noBooks = document.createElement('p');
+        noBooks.classList.add('no-book-error');
+        noBooks.textContent = "You do not have any books in your library."
+        tableContainer.appendChild(noBooks);
+    }
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)
