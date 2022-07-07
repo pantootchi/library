@@ -9,7 +9,7 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <h1>My Library</h1>
+    <h1 class="clickable">My Library</h1>
 
     <div class="bookshelf">
         <div class="shelf"></div>
@@ -19,9 +19,9 @@
         <div class="shelf"></div>
     </div>
 
-    <div class="add-button">+ Add a Book</div>
+    <div class="clickable add-button">+ Add a Book</div>
 
-    <div class="modal">
+    <div class="modal form-modal">
         <div class="modal-content">
             <span class="close-button">✘</span>
             <h1>Add a new book</h1>
@@ -53,12 +53,117 @@
         </div>
     </div>
 
-    <div class="book-modal">
+    <div class="modal book-modal">
         <div class="modal-content">
-            <span class="close-button">✘</span>
+            <span class="close-button general">✘</span>
             <div class="book-info"></div>
             <button class="remove">Remove</button>
         </div>
     </div>
+
+    <div class="modal library-modal">
+        <div class="modal-content">
+            <span class="close-button general">✘</span>
+            <h1>List of Books</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Pages</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Status</th>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                            <td>Lord of the Rings</td>
+                            <td>J. R. R. Tolkien</td>
+                            <td>423</td>
+                            <td>1</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Neuromancer</td>
+                            <td>William Gibson</td>
+                            <td>271</td>
+                            <td>2</td>
+                            <td>Not Read</td>
+                        </tr>
+                        <tr>
+                            <td>Catch-22</td>
+                            <td>Joseph Heller</td>
+                            <td>453</td>
+                            <td>3</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Music Theory for the Bass Player</td>
+                            <td>Ariane Cap</td>
+                            <td>186</td>
+                            <td>4</td>
+                            <td>Not Read</td>
+                        </tr>
+                        <tr>
+                            <td>Lord of the Rings</td>
+                            <td>J. R. R. Tolkien</td>
+                            <td>423</td>
+                            <td>1</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Neuromancer</td>
+                            <td>William Gibson</td>
+                            <td>271</td>
+                            <td>2</td>
+                            <td>Not Read</td>
+                        </tr>
+                        <tr>
+                            <td>Catch-22</td>
+                            <td>Joseph Heller</td>
+                            <td>453</td>
+                            <td>3</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Music Theory for the Bass Player</td>
+                            <td>Ariane Cap</td>
+                            <td>186</td>
+                            <td>4</td>
+                            <td>Not Read</td>
+                        </tr>
+                        <tr>
+                            <td>Lord of the Rings</td>
+                            <td>J. R. R. Tolkien</td>
+                            <td>423</td>
+                            <td>1</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Neuromancer</td>
+                            <td>William Gibson</td>
+                            <td>271</td>
+                            <td>2</td>
+                            <td>Not Read</td>
+                        </tr>
+                        <tr>
+                            <td>Catch-22</td>
+                            <td>Joseph Heller</td>
+                            <td>453</td>
+                            <td>3</td>
+                            <td>Read</td>
+                        </tr>
+                        <tr>
+                            <td>Music Theory for the Bass Player</td>
+                            <td>Ariane Cap</td>
+                            <td>186</td>
+                            <td>4</td>
+                            <td>Not Read</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

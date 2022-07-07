@@ -1,36 +1,50 @@
 const addButton = document.querySelector('.add-button');
 const shelves = document.querySelectorAll('.shelf');
-const modal = document.querySelector(".modal");
-const closeButton = document.querySelector(".modal .close-button");
-const bookCloseButton = document.querySelector(".book-modal .close-button");
+const formModal = document.querySelector(".form-modal");
+const closeButton = document.querySelector(".form-modal .close-button");
+const generalCloseButtons = document.querySelectorAll(".general");
 const addBookForm = document.getElementById("addBookForm");
 const bookModal = document.querySelector(".book-modal");
+const libraryModal = document.querySelector(".library-modal");
 const bookInfo = document.querySelector(".book-info");
 const removeButton = document.querySelector('.remove');
+const libraryTitle = document.querySelector('body > h1');
 
 const FULL_SHELF = 22;
 let myLibrary = [];
 let bookCounter = 0;
 let bookElements;
 
-// FORM MODAL
-addButton.addEventListener("click", toggleModal);
-closeButton.addEventListener("click", toggleModal);
+// CLOSE BUTTONS
+closeButton.addEventListener("click", toggleFormModal);
 window.addEventListener("click", windowOnClick);
+generalCloseButtons.forEach((generalButton) => {generalButton.addEventListener("click", closeModal)});
 
-function toggleModal() {
-    modal.classList.toggle("show-modal");
-    if (modal.classList.value.includes('show-modal')) {
-        addBookForm.reset();
+function closeModal() {
+    if (bookModal.classList.value.includes('show-modal')) {
+        bookModal.classList.remove("show-modal");
+    } else if (libraryModal.classList.value.includes('show-modal')) {
+        libraryModal.classList.remove("show-modal");
     }
 }
 
-// Any window click will close current active modal
+// Any outside window click will close current active modal
 function windowOnClick(event) {
-    if (event.target === modal) {
-        toggleModal();
-    } else if (event.target === bookModal) {
-        closeBookModal();
+    if (event.target === formModal) {
+        toggleFormModal();
+    } else if (event.target === bookModal || event.target == libraryModal) {
+        closeModal();
+    }
+}
+
+// FORM MODAL
+addButton.addEventListener("click", toggleFormModal);
+
+function toggleFormModal() {
+    formModal.classList.toggle("show-modal");
+    if (formModal.classList.value.includes('show-modal')) {
+        // Book form resets when FORM MODAL opens
+        addBookForm.reset();
     }
 }
 
@@ -53,7 +67,7 @@ function addBookToLibrary(e) {
     bookElementList();
 
     // Closes modal
-    toggleModal();
+    toggleFormModal();
 }
 
 function Book (title, author, pages, read, id) {
@@ -114,13 +128,6 @@ function openBookModal(e) {
     generateBookInfo(e.target.id);
     // Open Book Modal
     bookModal.classList.add("show-modal");
-}
-
-// CLOSE BUTTON
-bookCloseButton.addEventListener("click", closeBookModal);
-
-function closeBookModal() {
-    bookModal.classList.remove("show-modal");
 }
 
 function generateBookInfo(e) {
@@ -194,10 +201,17 @@ function removeBookFromLibrary() {
                 }
             });
 
-            closeBookModal();
+            closeModal();
             break;
         }
     }
+}
+
+// LIBRARY MODAL
+libraryTitle.addEventListener("click", openLibraryModal);
+
+function openLibraryModal() {
+    libraryModal.classList.add('show-modal');
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)

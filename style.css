@@ -130,26 +130,30 @@ body {
     min-height: 50px;
 }
 
+/* PAGE'S CLICKABLE CONTENT */
+
 .add-button {
     font-size: 40px;
+}
+
+.clickable {
     transition: all .2s ease-in-out;
 }
 
-.add-button:hover {
+.clickable:hover {
     transform: scale(1.1);
 }
 
 .book, 
-.add-button,
+.clickable,
 button,
 .close-button {
     cursor: pointer;
 }
 
-/* MODAL */
+/* MODALS */
 
-.modal,
-.book-modal {
+.modal {
     position: fixed;
     left: 0;
     top: 0;
@@ -277,8 +281,8 @@ button {
 .remove {
     padding: 5px 20px;
     font-size: 1rem;
-
 }
+
 .remove:hover {
     background-color: red;
     border-color: white;
@@ -348,3 +352,66 @@ button {
   .slider.round:before {
     border-radius: 50%;
   }
+
+/* LIBRARY MODAL's CONTENT */
+
+.library-modal .modal-content {
+    width: 40rem;
+    margin: 0 auto;
+}
+
+table {
+    border-collapse: collapse;
+    /* border: 2px solid black; */
+    font-size: 1.2rem;
+}
+
+td, 
+th {
+    padding: 10px 20px;
+}
+
+th {
+    background-color: var(--dark-color);
+    color: white;
+    font-size: 2rem;
+}
+
+th:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+th:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+
+    /* Scrollbar Firefox */
+    scrollbar-width: auto;
+    scrollbar-color: #000000 #ffffff;
+
+}
+
+/* Scrollbar Chrome, Edge, and Safari */
+.table-container::-webkit-scrollbar {
+    width: 16px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+}
