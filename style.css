@@ -30,12 +30,27 @@ body {
     color: white;
 }
 
+/* BOOKSHELF DESIGN */
+
 .bookshelf {
+    flex-shrink: 0;
     width: 500px;
     height: 800px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(5, 1fr);
+}
+
+.shelf:nth-of-type(odd) {
+    grid-column: 1 / 9;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.shelf:nth-of-type(even) {
+    grid-column: 3 / 11;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .shelf {
@@ -95,17 +110,7 @@ body {
     bottom: -26px;
 }
 
-.shelf:nth-of-type(odd) {
-    grid-column: 1 / 9;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.shelf:nth-of-type(even) {
-    grid-column: 3 / 11;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
+/* BOOK DESIGN */
 
 .book {
     padding: 5px 0;
@@ -120,7 +125,9 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-height: 110px;
+
+    max-height: 100px;
+    min-height: 50px;
 }
 
 .add-button {
@@ -186,7 +193,7 @@ button,
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-/* MODAL CONTENT */
+/* FORM MODAL'S CONTENT */
 
 h1 {
     font-size: 3rem;
@@ -247,6 +254,8 @@ button {
     align-items: center;
     gap: 15px;
 }
+
+/* BOOK MODAL'S CONTENT */
 
 .book-info {
     display: flex;
