@@ -232,7 +232,19 @@ function generateBookList() {
 
             for(let value = 0; value < 5; value++) {
                 const newCell = document.createElement('td');
-                newCell.textContent = Object.values(myLibrary[book])[value];
+
+                if (value != 4) {
+                    newCell.textContent = Object.values(myLibrary[book])[value];
+                } else {
+                    const checkBox = document.createElement('input');
+                    checkBox.setAttribute('type', 'checkbox');
+                    checkBox.checked = Object.values(myLibrary[book])[value];
+                    newCell.appendChild(checkBox);
+
+                    checkBox.addEventListener('change', function() {
+                        
+                    })
+                }
 
                 tBody.appendChild(newRow);
                 newRow.appendChild(newCell);
