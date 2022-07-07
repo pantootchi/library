@@ -9,8 +9,15 @@ const bookInfo = document.querySelector(".book-info");
 const removeButton = document.querySelector('.remove');
 
 const FULL_SHELF = 22;
+let myLibrary = [];
+let bookCounter = 0;
+let bookElements;
 
-// MODAL 
+// FORM MODAL
+addButton.addEventListener("click", toggleModal);
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+
 function toggleModal() {
     modal.classList.toggle("show-modal");
     if (modal.classList.value.includes('show-modal')) {
@@ -18,6 +25,7 @@ function toggleModal() {
     }
 }
 
+// Any window click will close current active modal
 function windowOnClick(event) {
     if (event.target === modal) {
         toggleModal();
@@ -26,14 +34,27 @@ function windowOnClick(event) {
     }
 }
 
-addButton.addEventListener("click", toggleModal);
-closeButton.addEventListener("click", toggleModal);
-bookCloseButton.addEventListener("click", closeBookModal);
-window.addEventListener("click", windowOnClick);
+addBookForm.addEventListener("submit", addBookToLibrary);
 
-let myLibrary = [];
-let bookCounter = 0;
-let bookElements;
+function addBookToLibrary(e) {
+    // Stops form from submitting values
+    e.preventDefault();
+
+    // Creates new Book object
+    const newBook = createBookObject();
+
+    // Adds new Book object to myLibrary array
+    myLibrary.push(newBook)
+
+    // Visually displays new Book object
+    displayBook(newBook);
+
+    // Creates NodeList of all Book elements
+    bookElementList();
+
+    // Closes modal
+    toggleModal();
+}
 
 function Book (title, author, pages, read, id) {
     this.title = title
@@ -43,42 +64,60 @@ function Book (title, author, pages, read, id) {
     this.id = id
 }
 
-addBookForm.addEventListener("submit", addBookToLibrary);
+function createBookObject() {
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const pages = document.getElementById('pages').value;
+    const read = document.getElementById('read').checked;
+    const id = bookCounter += 1;
 
-function addBookToLibrary(e) {
-    // Stops form from submitting values
-    e.preventDefault();
+    return new Book(title, author, pages, read, id);
+}
 
-    // Create new Book object
-    const newBook = createBookObject();
+function generateRGB() {
+    let R = Math.floor(Math.random() * 255);
+    let G = Math.floor(Math.random() * 255);
+    let B = Math.floor(Math.random() * 255);
+    return `rgb(${R}, ${G}, ${B})`;
+}
 
-    // Add new Book object to myLibrary array
-    myLibrary.push(newBook)
-    
-    // Visually display new Book object
-    displayBook(newBook);
+function displayBook(bookObj) {
+    // Create new Book element
+    const bookElement = document.createElement('span');
+    bookElement.textContent = bookObj.title;
+    bookElement.classList.add("book");
+    bookElement.setAttribute('id', bookObj.id);
+    bookElement.style.backgroundColor = generateRGB();
 
-    // Create NodeList of all Book elements
-    bookElementList();
-
-    // Close modal
-    toggleModal();
+    // Append new Book element to the DOM
+    for (i = 0; i < shelves.length; i++) {
+        if (shelves[i].children.length != FULL_SHELF) {
+            shelves[i].appendChild(bookElement);
+            break;
+        }
+    }
 }
 
 function bookElementList() {
+    // Initializes bookElements variable to a NodeList of books
     bookElements = document.querySelectorAll('.book');
 
+    // Activates event listener for each book element/nodes
     bookElements.forEach((book) => {book.addEventListener('click', openBookModal)})
 }
 
+// BOOK MODAL
 function openBookModal(e) {
     // Reset Book Modal's content
     bookInfo.textContent = '';
-    // Open Book Modal
-    bookModal.classList.add("show-modal");
     // Generate Book Modal's content
     generateBookInfo(e.target.id);
+    // Open Book Modal
+    bookModal.classList.add("show-modal");
 }
+
+// CLOSE BUTTON
+bookCloseButton.addEventListener("click", closeBookModal);
 
 function closeBookModal() {
     bookModal.classList.remove("show-modal");
@@ -127,42 +166,45 @@ function generateBookInfo(e) {
                 myLibrary[i].read = this.checked;
             })
 
+            // Add book ID to the remove button's ID so it knows which one to remove when clicked
+            removeButton.id = myLibrary[i].id;
             break;
         }
     }
 }
 
+// REMOVE BUTTON
+removeButton.addEventListener("click", removeBookFromLibrary);
 
-function createBookObject() {
-    const title = document.getElementById('title').value;
-    const author = document.getElementById('author').value;
-    const pages = document.getElementById('pages').value;
-    const read = document.getElementById('read').checked;
-    const id = bookCounter += 1;
+function removeBookFromLibrary() {
+    for (let i = 0; i < myLibrary.length; i++) {
+        if(removeButton.id == myLibrary[i].id) {
+            // Removes book object from myLibrary array
+            myLibrary.splice(i,1);
 
-    return new Book(title, author, pages, read, id);
-}
+            // Removes book visually
+            bookElements.forEach((book) => {
+                if (book.id == removeButton.id) {
 
-function generateRGB() {
-    let R = Math.floor(Math.random() * 255);
-    let G = Math.floor(Math.random() * 255);
-    let B = Math.floor(Math.random() * 255);
-    return `rgb(${R}, ${G}, ${B})`;
-}
+                    // Removes individual node
+                    book.remove();
 
-function displayBook(bookObj) {
-    // Create new Book element
-    const bookElement = document.createElement('span');
-    bookElement.textContent = bookObj.title;
-    bookElement.classList.add("book");
-    bookElement.setAttribute('id', bookObj.id);
-    bookElement.style.backgroundColor = generateRGB();
+                    // Breaks the forEach loop
+                    return;
+                }
+            });
 
-    // Append new Book element to the document
-    for (i = 0; i < shelves.length; i++) {
-        if (shelves[i].children.length != FULL_SHELF) {
-            shelves[i].appendChild(bookElement);
+            closeBookModal();
             break;
         }
     }
 }
+
+/* If the page loads and there already is a saved list of books (myLibrary)
+then this will populate the shelves when the page loads */
+/*window.addEventListener('load', function () {
+    for (let i = 0; i < myLibrary.length; i++) {
+        displayBook(myLibrary[i]);
+    };
+    bookElementList();
+});*/
