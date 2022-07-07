@@ -6,6 +6,7 @@ const bookCloseButton = document.querySelector(".book-modal .close-button");
 const addBookForm = document.getElementById("addBookForm");
 const bookModal = document.querySelector(".book-modal");
 const bookInfo = document.querySelector(".book-info");
+const removeButton = document.querySelector('.remove');
 
 const FULL_SHELF = 22;
 
@@ -130,6 +131,7 @@ function generateBookInfo(e) {
         }
     }
 }
+
 
 function createBookObject() {
     const title = document.getElementById('title').value;

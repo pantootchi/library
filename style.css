@@ -265,6 +265,16 @@ button {
     font-size: 1.5rem;
 }
 
+.remove {
+    padding: 5px 20px;
+    font-size: 1rem;
+
+}
+.remove:hover {
+    background-color: red;
+    border-color: white;
+}
+
 /* TOGGLE SWITCH */
 
 /* The switch - the box around the slider */
