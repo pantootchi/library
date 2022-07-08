@@ -15,8 +15,6 @@ const tBody = document.querySelector('tbody');
 const FULL_SHELF = 22;
 let myLibrary = [];
 let bookCounter = 0;
-let bookElements;
-let checkBoxElements;
 
 // CLOSE BUTTONS
 closeButton.addEventListener("click", toggleFormModal);
@@ -228,6 +226,9 @@ function openLibraryModal() {
     //Create NodeList of all Checkbox elements
     checkBoxNodeList();
 
+    //Create NodeList of all Delete elements
+    deleteNodeList();
+
     // Open Library Modal
     libraryModal.classList.add('show-modal');
 }
@@ -236,18 +237,24 @@ function generateBookList() {
     if (myLibrary.length  > 0) {
         for (let book = 0; book < myLibrary.length; book++) {
             const newRow = document.createElement('tr');
+            newRow.id = myLibrary[book].id;
 
-            for(let value = 0; value < 5; value++) {
+            for(let value = 0; value < 6; value++) {
                 const newCell = document.createElement('td');
 
-                if (value != 4) {
+                if (value < 4) {
                     newCell.textContent = Object.values(myLibrary[book])[value];
-                } else {
+                } else if (value == 4){
                     const checkBox = document.createElement('input');
                     checkBox.setAttribute('type', 'checkbox');
                     checkBox.id = myLibrary[book].id;
                     checkBox.checked = myLibrary[book].read;
                     newCell.appendChild(checkBox);
+                } else {
+                    const span = document.createElement('span');
+                    span.id = myLibrary[book].id;
+                    span.textContent = "✘";
+                    newCell.appendChild(span);
                 }
 
                 tBody.appendChild(newRow);
@@ -265,7 +272,7 @@ function generateBookList() {
 
 function checkBoxNodeList() {
     // Initializes checkBoxElements variable to a NodeList of checkboxes
-    checkBoxElements = document.querySelectorAll('td input');
+    const checkBoxElements = document.querySelectorAll('td input');
 
     // Activates event listener for each checkbox nodes
     checkBoxElements.forEach((checkbox) => {checkbox.addEventListener('change', function() {
@@ -276,6 +283,11 @@ function checkBoxNodeList() {
             }
         }
     })})
+}
+
+function deleteNodeList() {
+    const deleteElements = document.querySelectorAll('td[id]');
+    console.log(deleteElements);
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)

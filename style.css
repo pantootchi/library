@@ -148,7 +148,8 @@ body {
 .clickable,
 button,
 .close-button,
-td input {
+td input,
+span[id] {
     cursor: pointer;
 }
 
@@ -399,6 +400,10 @@ p {
 
 .no-book-error {
     margin-top: 10px;
+}
+
+span[id]:hover {
+    color: red;
 }
 
 .table-container {
