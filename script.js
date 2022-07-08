@@ -186,23 +186,26 @@ removeButton.addEventListener("click", removeBookFromLibrary);
 
 function removeBookFromLibrary() {
     for (let i = 0; i < myLibrary.length; i++) {
-        if(removeButton.id == myLibrary[i].id) {
+        if(this.id == myLibrary[i].id) {
+
             // Removes book object from myLibrary array
             myLibrary.splice(i,1);
 
             // Removes book visually
             bookElements.forEach((book) => {
-                if (book.id == removeButton.id) {
+                if (book.id == this.id) {
 
-                    // Removes individual node
+                    // Removes individual book node
                     book.remove();
-
                     // Breaks the forEach loop
                     return;
                 }
             });
 
-            closeModal();
+            if (bookModal.classList.value.includes('show-modal')) {
+                closeModal();
+            }
+
             break;
         }
     }
@@ -237,7 +240,6 @@ function generateBookList() {
     if (myLibrary.length  > 0) {
         for (let book = 0; book < myLibrary.length; book++) {
             const newRow = document.createElement('tr');
-            newRow.id = myLibrary[book].id;
 
             for(let value = 0; value < 6; value++) {
                 const newCell = document.createElement('td');
@@ -286,8 +288,15 @@ function checkBoxNodeList() {
 }
 
 function deleteNodeList() {
-    const deleteElements = document.querySelectorAll('td[id]');
-    console.log(deleteElements);
+    const deleteElements = document.querySelectorAll('td span[id]');
+
+    deleteElements.forEach((del) => {del.addEventListener("click", function() {
+        // Removes from table list
+        this.parentElement.parentElement.remove();
+    })})
+
+    deleteElements.forEach((del) => {del.addEventListener("click", removeBookFromLibrary)})
+
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)

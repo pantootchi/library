@@ -149,7 +149,7 @@ body {
 button,
 .close-button,
 td input,
-span[id] {
+td span[id] {
     cursor: pointer;
 }
 
@@ -402,7 +402,7 @@ p {
     margin-top: 10px;
 }
 
-span[id]:hover {
+td span[id]:hover {
     color: red;
 }
 
