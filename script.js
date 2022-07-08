@@ -225,6 +225,8 @@ function openLibraryModal() {
     libraryModal.classList.add('show-modal');
 }
 
+let checkBoxList;
+
 function generateBookList() {
     if (myLibrary.length  > 0) {
         for (let book = 0; book < myLibrary.length; book++) {
@@ -238,12 +240,9 @@ function generateBookList() {
                 } else {
                     const checkBox = document.createElement('input');
                     checkBox.setAttribute('type', 'checkbox');
-                    checkBox.checked = Object.values(myLibrary[book])[value];
+                    checkBox.id = myLibrary[book].id;
+                    checkBox.checked = myLibrary[book].read;
                     newCell.appendChild(checkBox);
-
-                    checkBox.addEventListener('change', function() {
-                        
-                    })
                 }
 
                 tBody.appendChild(newRow);
@@ -251,6 +250,7 @@ function generateBookList() {
             }
         }
     } else {
+        // Generate No Book error if myLibrary is empty
         const noBooks = document.createElement('p');
         noBooks.classList.add('no-book-error');
         noBooks.textContent = "You do not have any books in your library."
