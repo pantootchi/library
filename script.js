@@ -16,6 +16,7 @@ const FULL_SHELF = 22;
 let myLibrary = [];
 let bookCounter = 0;
 let bookElements;
+let checkBoxElements;
 
 // CLOSE BUTTONS
 closeButton.addEventListener("click", toggleFormModal);
@@ -118,7 +119,7 @@ function bookElementList() {
     // Initializes bookElements variable to a NodeList of books
     bookElements = document.querySelectorAll('.book');
 
-    // Activates event listener for each book element/nodes
+    // Activates event listener for each book nodes
     bookElements.forEach((book) => {book.addEventListener('click', openBookModal)})
 }
 
@@ -215,17 +216,21 @@ libraryTitle.addEventListener("click", openLibraryModal);
 function openLibraryModal() {
     // Reset Table's Content
     tBody.textContent = '';
+
     // Removes "No Book" error
     if (tableContainer.lastChild.nodeType == 1) {
         tableContainer.lastChild.remove();
     }
+
     // Generate Library Modal's Content
     generateBookList();
+
+    //Create NodeList of all Checkbox elements
+    checkBoxNodeList();
+
     // Open Library Modal
     libraryModal.classList.add('show-modal');
 }
-
-let checkBoxList;
 
 function generateBookList() {
     if (myLibrary.length  > 0) {
@@ -256,6 +261,21 @@ function generateBookList() {
         noBooks.textContent = "You do not have any books in your library."
         tableContainer.appendChild(noBooks);
     }
+}
+
+function checkBoxNodeList() {
+    // Initializes checkBoxElements variable to a NodeList of checkboxes
+    checkBoxElements = document.querySelectorAll('td input');
+
+    // Activates event listener for each checkbox nodes
+    checkBoxElements.forEach((checkbox) => {checkbox.addEventListener('change', function() {
+        for (let i = 0; i < myLibrary.length; i++) {
+            if (this.id == myLibrary[i].id) {
+                myLibrary[i].read = this.checked;
+                break;
+            }
+        }
+    })})
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)
