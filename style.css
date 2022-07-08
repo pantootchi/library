@@ -392,6 +392,12 @@ td {
     text-align: center;
 }
 
+thead {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
 table,
 .no-book-error,
 p {
