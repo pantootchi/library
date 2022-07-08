@@ -12,6 +12,7 @@ const libraryTitle = document.querySelector('body > h1');
 const tableContainer = document.querySelector('.table-container');
 const tBody = document.querySelector('tbody');
 const noBookError = document.querySelector('.no-book-error');
+const dataPropertyList = document.querySelectorAll('[data-property]');
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -147,8 +148,9 @@ function bookElementList() {
 
 // BOOK MODAL
 function openBookModal(e) {
-    // Reset Book Modal's content
-    bookInfo.textContent = '';
+    for (node of dataPropertyList) {
+        node.textContent = '';
+    }
     // Generate Book Modal's content
     generateBookInfo(e.target.id);
     // Open Book Modal
@@ -159,42 +161,22 @@ function generateBookInfo(e) {
     for (let i = 0; i < myLibrary.length; i++) {
         if(e == myLibrary[i].id) {
 
-            const book = document.createElement('div');
-            const title = document.createElement('h1');
-            title.textContent = myLibrary[i].title;
-            const author = document.createElement('h2');
-            author.textContent = `by ${myLibrary[i].author}`
+            for (let node of dataPropertyList) {
+                for (let [key, value] of Object.entries(myLibrary[i])) {
+                    if (node.getAttribute('data-property') === key) {
+                        node.textContent = value;
+                    }
+                }
+            }
 
-            const div = document.createElement('div');
-            div.classList.add('book-sub-info');
-            const pages = document.createElement('p');
-            pages.textContent = `Pages: ${myLibrary[i].pages}`
-            const bookId = document.createElement('p');
-            bookId.textContent = `Book ID: ${myLibrary[i].id}`
-
-            const div2 = document.createElement('div');
-            div2.classList.add('book-sub-info');
-            const read = document.createElement('p');
-            read.textContent = "Read";
-
-            const label = document.createElement('label');
-            label.classList.add('switch');
-            const input = document.createElement('input');
-            input.setAttribute('type', 'checkbox');
-            const span = document.createElement('span');
-            span.classList.add('slider', 'round');
-
-            bookInfo.append(book, author, div, read, div2);
-            book.append(title, author);
-            label.append(input, span);
-            div.append(pages, bookId);
-            div2.append(read, label);
+            const input = document.querySelector('.switch input');
 
             // Display current read value
             input.checked = myLibrary[i].read;
 
             // Update read value
             input.addEventListener('change', function() {
+                console.log(myLibrary[i]);
                 myLibrary[i].read = this.checked;
 
                 // Update cachedLibrary

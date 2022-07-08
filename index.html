@@ -56,7 +56,25 @@
     <div class="modal book-modal">
         <div class="modal-content">
             <span class="close-button general">✘</span>
-            <div class="book-info"></div>
+            <div class="book-info">
+                <div>
+                    <h1 data-property="title"></h1>
+                    <h2>by <span data-property="author"></span></h2>
+                </div>
+                
+                <div class="book-sub-info">
+                    <p>Pages: <span data-property="pages"></span></p>
+                    <p>Book ID: <span data-property="id"></span></p>
+                </div>
+
+                <div class="book-sub-info">
+                    <p>Read</p>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
             <button class="remove">Remove</button>
         </div>
     </div>
