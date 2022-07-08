@@ -32,11 +32,8 @@ window.addEventListener('load', function () {
         bookCounter = i+1;
         // Re-displays all book visually
         displayBook(myLibrary[i]);
-    };
-
-    // Makes each book node clickable
-    bookElementList();
-});
+    }
+})
 
 // CLOSE BUTTONS
 closeButton.addEventListener("click", toggleFormModal);
@@ -86,9 +83,6 @@ function addBookToLibrary(e) {
     // Visually displays new Book object
     displayBook(newBook);
 
-    // Creates NodeList of all Book elements
-    bookElementList();
-
     // Saves myLibrary array to local storage called cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
@@ -136,18 +130,14 @@ function displayBook(bookObj) {
             break;
         }
     }
-}
 
-function bookElementList() {
-    // Initializes bookElements variable to a NodeList of books
-    bookElements = document.querySelectorAll('.book');
-
-    // Activates event listener for each book nodes
-    bookElements.forEach((book) => {book.addEventListener('click', openBookModal)})
+    // Add "click" event listener for book element
+    bookElement.addEventListener('click', openBookModal);
 }
 
 // BOOK MODAL
 function openBookModal(e) {
+    // Reset Content
     for (node of dataPropertyList) {
         node.textContent = '';
     }
@@ -206,7 +196,7 @@ function removeBookFromLibrary(id) {
             localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
             // Removes book visually
-            bookElements.forEach((book) => {
+            document.querySelectorAll('.book').forEach((book) => {
                 if (book.id == id) {
 
                     // Removes individual book node
