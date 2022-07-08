@@ -11,6 +11,7 @@ const removeButton = document.querySelector('.remove');
 const libraryTitle = document.querySelector('body > h1');
 const tableContainer = document.querySelector('.table-container');
 const tBody = document.querySelector('tbody');
+const noBookError = document.querySelector('.no-book-error');
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -21,13 +22,18 @@ if (localStorage.cachedLibrary) {
     myLibrary = JSON.parse(localStorage.getItem("cachedLibrary"));
 }
 
-// Whenever the page loads and cachedLibrary exist, then this will populate the shelvess.
+// Whenever the page loads and cachedLibrary exist, then this will populate the shelves.
 window.addEventListener('load', function () {
     for (let i = 0; i < myLibrary.length; i++) {
+        // Re-assigns book objects' id from 1
         myLibrary[i].id = i+1;
+        // Increments bookCounter each time
         bookCounter = i+1;
+        // Re-displays all book visually
         displayBook(myLibrary[i]);
     };
+
+    // Makes each book node clickable
     bookElementList();
 });
 
@@ -195,7 +201,7 @@ function generateBookInfo(e) {
                 localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
             })
 
-            // Add book ID to the remove button's ID so it knows which one to remove when clicked
+            // Add book ID to the remove button's ID
             removeButton.id = myLibrary[i].id;
             break;
         }
@@ -228,6 +234,7 @@ function removeBookFromLibrary(id) {
                 }
             });
 
+            // Will close modal if it's the bookModal
             if (bookModal.classList.value.includes('show-modal')) {
                 closeModal();
             }
@@ -255,8 +262,6 @@ function openLibraryModal() {
     // Open Library Modal
     libraryModal.classList.add('show-modal');
 }
-
-const noBookError = document.querySelector('.no-book-error');
 
 function generateBookList() {
     if (myLibrary.length  > 0) {
@@ -287,6 +292,9 @@ function generateBookList() {
                 newRow.appendChild(newCell);
             }
         }
+    } else {
+        // Re-displays noBookError element if myLibrary array is empty
+        noBookError.removeAttribute('hidden');
     }
 }
 
@@ -315,7 +323,7 @@ function deleteNodeList() {
         removeBookFromLibrary(this.id);
         // Removes from table list
         this.parentElement.parentElement.remove();
-        // Re-displays noBookError element when myLibrary array is empty
+        // Re-displays noBookError element when table is emptied
         if (myLibrary.length  == 0) {
             noBookError.removeAttribute('hidden');
         }
