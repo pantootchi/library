@@ -264,12 +264,15 @@ function generateBookList() {
             }
         }
     } else {
-        // Generate No Book error if myLibrary is empty
-        const noBooks = document.createElement('p');
-        noBooks.classList.add('no-book-error');
-        noBooks.textContent = "You do not have any books in your library."
-        tableContainer.appendChild(noBooks);
+        displayNoBookError();
     }
+}
+
+function displayNoBookError() {
+    const noBooks = document.createElement('p');
+    noBooks.classList.add('no-book-error');
+    noBooks.textContent = "You do not have any books in your library."
+    tableContainer.appendChild(noBooks);
 }
 
 function checkBoxNodeList() {
