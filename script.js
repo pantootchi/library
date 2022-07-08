@@ -182,18 +182,20 @@ function generateBookInfo(e) {
 }
 
 // REMOVE BUTTON
-removeButton.addEventListener("click", removeBookFromLibrary);
+removeButton.addEventListener("click", function() {
+    removeBookFromLibrary(this.id);
+});
 
-function removeBookFromLibrary() {
+function removeBookFromLibrary(id) {
     for (let i = 0; i < myLibrary.length; i++) {
-        if(this.id == myLibrary[i].id) {
+        if(id == myLibrary[i].id) {
 
             // Removes book object from myLibrary array
             myLibrary.splice(i,1);
 
             // Removes book visually
             bookElements.forEach((book) => {
-                if (book.id == this.id) {
+                if (book.id == id) {
 
                     // Removes individual book node
                     book.remove();
@@ -205,7 +207,6 @@ function removeBookFromLibrary() {
             if (bookModal.classList.value.includes('show-modal')) {
                 closeModal();
             }
-
             break;
         }
     }
@@ -217,11 +218,6 @@ libraryTitle.addEventListener("click", openLibraryModal);
 function openLibraryModal() {
     // Reset Table's Content
     tBody.textContent = '';
-
-    // Removes "No Book" error
-    if (tableContainer.lastChild.nodeType == 1) {
-        tableContainer.lastChild.remove();
-    }
 
     // Generate Library Modal's Content
     generateBookList();
@@ -236,8 +232,12 @@ function openLibraryModal() {
     libraryModal.classList.add('show-modal');
 }
 
+const noBookError = document.querySelector('.no-book-error');
+
 function generateBookList() {
     if (myLibrary.length  > 0) {
+        noBookError.setAttribute('hidden', '');
+
         for (let book = 0; book < myLibrary.length; book++) {
             const newRow = document.createElement('tr');
 
@@ -263,16 +263,7 @@ function generateBookList() {
                 newRow.appendChild(newCell);
             }
         }
-    } else {
-        displayNoBookError();
     }
-}
-
-function displayNoBookError() {
-    const noBooks = document.createElement('p');
-    noBooks.classList.add('no-book-error');
-    noBooks.textContent = "You do not have any books in your library."
-    tableContainer.appendChild(noBooks);
 }
 
 function checkBoxNodeList() {
@@ -294,12 +285,16 @@ function deleteNodeList() {
     const deleteElements = document.querySelectorAll('td span[id]');
 
     deleteElements.forEach((del) => {del.addEventListener("click", function() {
+        // Removes book visually and from myLibrary array
+        removeBookFromLibrary(this.id);
         // Removes from table list
         this.parentElement.parentElement.remove();
+        // Re-displays noBookError element when myLibrary array is empty
+        if (myLibrary.length  == 0) {
+            noBookError.removeAttribute('hidden');
+        }
+    
     })})
-
-    deleteElements.forEach((del) => {del.addEventListener("click", removeBookFromLibrary)})
-
 }
 
 /* If the page loads and there already is a saved list of books (myLibrary)
