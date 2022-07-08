@@ -13,6 +13,8 @@ const tableContainer = document.querySelector('.table-container');
 const tBody = document.querySelector('tbody');
 const noBookError = document.querySelector('.no-book-error');
 const dataPropertyList = document.querySelectorAll('[data-property]');
+const readSwitch = document.querySelector('.switch input');
+
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -159,19 +161,11 @@ function generateBookInfo(e) {
                 }
             }
 
-            const input = document.querySelector('.switch input');
-
             // Display current read value
-            input.checked = myLibrary[i].read;
+            readSwitch.checked = myLibrary[i].read;
 
-            // Update read value
-            input.addEventListener('change', function() {
-                console.log(myLibrary[i]);
-                myLibrary[i].read = this.checked;
-
-                // Update cachedLibrary
-                localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-            })
+            // Add book ID to the checkbox's ID
+            readSwitch.id = myLibrary[i].id;
 
             // Add book ID to the remove button's ID
             removeButton.id = myLibrary[i].id;
@@ -180,39 +174,43 @@ function generateBookInfo(e) {
     }
 }
 
+// READ SWITCH BUTTON
+readSwitch.addEventListener('change', function() {
+    myLibrary.find((book) => book.id == this.id).read = this.checked;
+
+    // Update cachedLibrary
+    localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
+})
+
+
 // REMOVE BUTTON
 removeButton.addEventListener("click", function() {
     removeBookFromLibrary(this.id);
 });
 
 function removeBookFromLibrary(id) {
-    for (let i = 0; i < myLibrary.length; i++) {
-        if(id == myLibrary[i].id) {
+    // Removes book object from myLibrary array
+    myLibrary.splice(myLibrary.findIndex((book) => book.id == id), 1);
 
-            // Removes book object from myLibrary array
-            myLibrary.splice(i,1);
+    // Update cachedLibrary
+    localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
-            // Update cachedLibrary
-            localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
+    // Removes book visually
+    document.querySelectorAll('.book').forEach((book) => {
+        if (book.id == id) {
 
-            // Removes book visually
-            document.querySelectorAll('.book').forEach((book) => {
-                if (book.id == id) {
-
-                    // Removes individual book node
-                    book.remove();
-                    // Breaks the forEach loop
-                    return;
-                }
-            });
-
-            // Will close modal if it's the bookModal
-            if (bookModal.classList.value.includes('show-modal')) {
-                closeModal();
-            }
-            break;
+            // Removes individual book node
+            book.remove();
+            // Breaks the forEach loop
+            return;
         }
+    });
+
+    // Will close modal if it's the bookModal
+    if (bookModal.classList.value.includes('show-modal')) {
+        closeModal();
     }
+
 }
 
 // LIBRARY MODAL
@@ -224,12 +222,6 @@ function openLibraryModal() {
 
     // Generate Library Modal's Content
     generateBookList();
-
-    //Create NodeList of all Checkbox elements
-    checkBoxNodeList();
-
-    //Create NodeList of all Delete elements
-    deleteNodeList();
 
     // Open Library Modal
     libraryModal.classList.add('show-modal');
@@ -253,11 +245,31 @@ function generateBookList() {
                     checkBox.id = myLibrary[book].id;
                     checkBox.checked = myLibrary[book].read;
                     newCell.appendChild(checkBox);
+
+                    console.log(checkBox);
+                    checkBox.addEventListener('change', function () {
+                        myLibrary[book].read = this.checked;
+
+                        // Update cachedLibrary
+                        localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
+                    })
+
                 } else {
-                    const span = document.createElement('span');
-                    span.id = myLibrary[book].id;
-                    span.textContent = "✘";
-                    newCell.appendChild(span);
+                    const del = document.createElement('span');
+                    del.id = myLibrary[book].id;
+                    del.textContent = "✘";
+                    newCell.appendChild(del);
+
+                    console.log(del);
+                    del.addEventListener("click", function() {
+                        // Removes book visually and from myLibrary array
+                        removeBookFromLibrary(myLibrary[book].id);
+                        // Removes from table list
+                        this.parentElement.parentElement.remove();
+                        // Re-displays noBookError element when table is emptied
+                        if (myLibrary.length  == 0) {
+                            noBookError.removeAttribute('hidden');
+                        }})
                 }
 
                 tBody.appendChild(newRow);
@@ -270,35 +282,8 @@ function generateBookList() {
     }
 }
 
-function checkBoxNodeList() {
-    // Initializes checkBoxElements variable to a NodeList of checkboxes
-    const checkBoxElements = document.querySelectorAll('td input');
+function addEvent(node, bookObj) {
+    switch(node) {
 
-    // Activates event listener for each checkbox nodes
-    checkBoxElements.forEach((checkbox) => {checkbox.addEventListener('change', function() {
-        for (let i = 0; i < myLibrary.length; i++) {
-            if (this.id == myLibrary[i].id) {
-                myLibrary[i].read = this.checked;
-                // Update cachedLibrary
-                localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-                break;
-            }
-        }
-    })})
-}
-
-function deleteNodeList() {
-    const deleteElements = document.querySelectorAll('td span[id]');
-
-    deleteElements.forEach((del) => {del.addEventListener("click", function() {
-        // Removes book visually and from myLibrary array
-        removeBookFromLibrary(this.id);
-        // Removes from table list
-        this.parentElement.parentElement.remove();
-        // Re-displays noBookError element when table is emptied
-        if (myLibrary.length  == 0) {
-            noBookError.removeAttribute('hidden');
-        }
-    
-    })})
+    }
 }
