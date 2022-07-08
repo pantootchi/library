@@ -16,6 +16,21 @@ const FULL_SHELF = 22;
 let myLibrary = [];
 let bookCounter = 0;
 
+// If cachedlibrary exist, then set myLibrary array equal to cachedLibrary
+if (localStorage.cachedLibrary) {
+    myLibrary = JSON.parse(localStorage.getItem("cachedLibrary"));
+}
+
+// Whenever the page loads and cachedLibrary exist, then this will populate the shelvess.
+window.addEventListener('load', function () {
+    for (let i = 0; i < myLibrary.length; i++) {
+        myLibrary[i].id = i+1;
+        bookCounter = i+1;
+        displayBook(myLibrary[i]);
+    };
+    bookElementList();
+});
+
 // CLOSE BUTTONS
 closeButton.addEventListener("click", toggleFormModal);
 window.addEventListener("click", windowOnClick);
@@ -66,6 +81,9 @@ function addBookToLibrary(e) {
 
     // Creates NodeList of all Book elements
     bookElementList();
+
+    // Saves myLibrary array to local storage called cachedLibrary
+    localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
     // Closes modal
     toggleFormModal();
@@ -172,6 +190,9 @@ function generateBookInfo(e) {
             // Update read value
             input.addEventListener('change', function() {
                 myLibrary[i].read = this.checked;
+
+                // Update cachedLibrary
+                localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
             })
 
             // Add book ID to the remove button's ID so it knows which one to remove when clicked
@@ -192,6 +213,9 @@ function removeBookFromLibrary(id) {
 
             // Removes book object from myLibrary array
             myLibrary.splice(i,1);
+
+            // Update cachedLibrary
+            localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
             // Removes book visually
             bookElements.forEach((book) => {
@@ -275,6 +299,8 @@ function checkBoxNodeList() {
         for (let i = 0; i < myLibrary.length; i++) {
             if (this.id == myLibrary[i].id) {
                 myLibrary[i].read = this.checked;
+                // Update cachedLibrary
+                localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
                 break;
             }
         }
@@ -296,12 +322,3 @@ function deleteNodeList() {
     
     })})
 }
-
-/* If the page loads and there already is a saved list of books (myLibrary)
-then this will populate the shelves when the page loads */
-/*window.addEventListener('load', function () {
-    for (let i = 0; i < myLibrary.length; i++) {
-        displayBook(myLibrary[i]);
-    };
-    bookElementList();
-});*/
