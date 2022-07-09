@@ -9,8 +9,7 @@ const libraryModal = document.querySelector(".library-modal");
 const bookInfo = document.querySelector(".book-info");
 const removeButton = document.querySelector('.remove');
 const libraryTitle = document.querySelector('body > h1');
-const tableContainer = document.querySelector('.table-container');
-const tBody = document.querySelector('tbody');
+const tableBody = document.querySelector('tbody');
 const noBookError = document.querySelector('.no-book-error');
 const dataPropertyList = document.querySelectorAll('[data-property]');
 const readSwitch = document.querySelector('.switch input');
@@ -30,8 +29,6 @@ window.addEventListener('load', function () {
     for (let i = 0; i < myLibrary.length; i++) {
         // Re-assigns book objects' id from 1
         myLibrary[i].id = bookCounter = i+1;
-        // // Increments bookCounter each time
-        // bookCounter = i+1;
         // Re-displays all book visually
         displayBook(myLibrary[i]);
     }
@@ -184,7 +181,7 @@ libraryTitle.addEventListener("click", openLibraryModal);
 
 function openLibraryModal() {
     // Reset Table's Content
-    tBody.textContent = '';
+    tableBody.textContent = '';
     // Generate Table of Books if myLibrary isn't empty
     (myLibrary.length) ? generateBookList() : noBookError.removeAttribute('hidden');
     // Open Library Modal
@@ -196,7 +193,7 @@ function generateBookList() {
 
     myLibrary.forEach(function (book) {
         const newRow = document.createElement('tr');
-        tBody.appendChild(newRow);
+        tableBody.appendChild(newRow);
 
         for(let value = 0; value < 6; value++) {
             const newCell = document.createElement('td');
