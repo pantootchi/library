@@ -75,20 +75,15 @@ addBookForm.addEventListener("submit", addBookToLibrary);
 function addBookToLibrary(e) {
     // Stops form from submitting values
     e.preventDefault();
-
     // Creates new Book object
     const newBook = createBookObject();
-
     // Adds new Book object to myLibrary array
     myLibrary.push(newBook)
-
     // Visually displays new Book object
     displayBook(newBook);
-
     // Saves myLibrary array to local storage called cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-
-    // Closes modal
+    // Closes Form Modal
     toggleFormModal();
 }
 
@@ -163,7 +158,6 @@ function generateBookInfo(bookNodeId) {
 
             // Display current read value
             readSwitch.checked = myLibrary[i].read;
-
             // Add book ID to the remove button's ID and checkbox's ID
             removeButton.id = readSwitch.id = myLibrary[i].id;
             break;
@@ -175,8 +169,8 @@ function generateBookInfo(bookNodeId) {
 readSwitch.addEventListener('change', changeReadStatus)
 
 function changeReadStatus() {
+    // Updates book object's read status
     myLibrary.find((book) => book.id == this.id).read = this.checked;
-
     // Update cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 }
@@ -184,32 +178,19 @@ function changeReadStatus() {
 
 // REMOVE BUTTON
 removeButton.addEventListener("click", function() {
+    // Removes book visually and from myLibrary array
     removeBookFromLibrary(this.id);
+    // Close Book Modal
+    closeModal();
 })
 
 function removeBookFromLibrary(associatedId) {
     // Removes book object from myLibrary array
     myLibrary.splice(myLibrary.findIndex((book) => book.id == associatedId), 1);
-
     // Update cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-
     // Removes book visually
-    document.querySelectorAll('.book').forEach((book) => {
-        if (book.id == associatedId) {
-
-            // Removes individual book node
-            book.remove();
-            // Breaks the forEach loop
-            return;
-        }
-    });
-
-    // Will close modal if it's the bookModal
-    if (bookModal.classList.value.includes('show-modal')) {
-        closeModal();
-    }
-
+    document.querySelector(`.book[id="${associatedId}"]`).remove();
 }
 
 // LIBRARY MODAL
