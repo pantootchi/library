@@ -52,10 +52,13 @@ function closeModal() {
 
 // Any outside window click will close current active modal
 function windowOnClick(e) {
-    if (e.target === formModal) {
-        toggleFormModal();
-    } else if (e.target === bookModal || e.target == libraryModal) {
-        closeModal();
+    switch (e.target) {
+        case formModal:
+            toggleFormModal();
+            break;
+        case bookModal:
+        case libraryModal:
+            closeModal();
     }
 }
 
@@ -64,8 +67,8 @@ addButton.addEventListener("click", toggleFormModal);
 
 function toggleFormModal() {
     formModal.classList.toggle("show-modal");
+    // Book form resets when Form Modal closes
     if (!formModal.classList.value.includes('show-modal')) {
-        // Book form resets when Form Modal closes
         addBookForm.reset();
     }
 }
@@ -209,34 +212,34 @@ function generateBookList() {
     if (myLibrary.length  > 0) {
         noBookError.setAttribute('hidden', '');
 
-        for (let book = 0; book < myLibrary.length; book++) {
+        myLibrary.forEach(function (book) {
             const newRow = document.createElement('tr');
             tBody.appendChild(newRow);
 
             for(let value = 0; value < 6; value++) {
                 const newCell = document.createElement('td');
+                newRow.appendChild(newCell);
 
                 if (value < 4) {
-                    newCell.textContent = Object.values(myLibrary[book])[value];
+                    newCell.textContent = Object.values(book)[value];
                 } else if (value == 4){
                     const checkBox = document.createElement('input');
                     checkBox.setAttribute('type', 'checkbox');
-                    checkBox.id = myLibrary[book].id;
-                    checkBox.checked = myLibrary[book].read;
+                    checkBox.id = book.id;
+                    checkBox.checked = book.read;
                     newCell.appendChild(checkBox);
 
                     checkBox.addEventListener('change', changeReadStatus);
                 } else {
                     const del = document.createElement('span');
-                    del.id = myLibrary[book].id;
+                    del.id = book.id;
                     del.textContent = "✘";
                     newCell.appendChild(del);
 
                     del.addEventListener("click", deleteBtnFunc);
                 }
-                newRow.appendChild(newCell);
             }
-        }
+        });
     } else {
         // Re-displays noBookError element if myLibrary array is empty
         noBookError.removeAttribute('hidden');
