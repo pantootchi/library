@@ -51,10 +51,10 @@ function closeModal() {
 }
 
 // Any outside window click will close current active modal
-function windowOnClick(event) {
-    if (event.target === formModal) {
+function windowOnClick(e) {
+    if (e.target === formModal) {
         toggleFormModal();
-    } else if (event.target === bookModal || event.target == libraryModal) {
+    } else if (e.target === bookModal || e.target == libraryModal) {
         closeModal();
     }
 }
@@ -140,7 +140,7 @@ function displayBook(bookObj) {
 // BOOK MODAL
 function openBookModal(e) {
     // Reset Content
-    for (node of dataPropertyList) {
+    for (let node of dataPropertyList) {
         node.textContent = '';
     }
     // Generate Book Modal's content
@@ -149,9 +149,9 @@ function openBookModal(e) {
     bookModal.classList.add("show-modal");
 }
 
-function generateBookInfo(e) {
+function generateBookInfo(bookNodeId) {
     for (let i = 0; i < myLibrary.length; i++) {
-        if(e == myLibrary[i].id) {
+        if(bookNodeId == myLibrary[i].id) {
 
             for (let node of dataPropertyList) {
                 for (let [key, value] of Object.entries(myLibrary[i])) {
@@ -164,40 +164,39 @@ function generateBookInfo(e) {
             // Display current read value
             readSwitch.checked = myLibrary[i].read;
 
-            // Add book ID to the checkbox's ID
-            readSwitch.id = myLibrary[i].id;
-
-            // Add book ID to the remove button's ID
-            removeButton.id = myLibrary[i].id;
+            // Add book ID to the remove button's ID and checkbox's ID
+            removeButton.id = readSwitch.id = myLibrary[i].id;
             break;
         }
     }
 }
 
 // READ SWITCH BUTTON
-readSwitch.addEventListener('change', function() {
+readSwitch.addEventListener('change', changeReadStatus)
+
+function changeReadStatus() {
     myLibrary.find((book) => book.id == this.id).read = this.checked;
 
     // Update cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-})
+}
 
 
 // REMOVE BUTTON
 removeButton.addEventListener("click", function() {
     removeBookFromLibrary(this.id);
-});
+})
 
-function removeBookFromLibrary(id) {
+function removeBookFromLibrary(associatedId) {
     // Removes book object from myLibrary array
-    myLibrary.splice(myLibrary.findIndex((book) => book.id == id), 1);
+    myLibrary.splice(myLibrary.findIndex((book) => book.id == associatedId), 1);
 
     // Update cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
 
     // Removes book visually
     document.querySelectorAll('.book').forEach((book) => {
-        if (book.id == id) {
+        if (book.id == associatedId) {
 
             // Removes individual book node
             book.remove();
@@ -219,10 +218,8 @@ libraryTitle.addEventListener("click", openLibraryModal);
 function openLibraryModal() {
     // Reset Table's Content
     tBody.textContent = '';
-
     // Generate Library Modal's Content
     generateBookList();
-
     // Open Library Modal
     libraryModal.classList.add('show-modal');
 }
@@ -233,6 +230,7 @@ function generateBookList() {
 
         for (let book = 0; book < myLibrary.length; book++) {
             const newRow = document.createElement('tr');
+            tBody.appendChild(newRow);
 
             for(let value = 0; value < 6; value++) {
                 const newCell = document.createElement('td');
@@ -246,18 +244,15 @@ function generateBookList() {
                     checkBox.checked = myLibrary[book].read;
                     newCell.appendChild(checkBox);
 
-                    checkBox.addEventListener('change', function () {addEvent(this, book)});
-
+                    checkBox.addEventListener('change', changeReadStatus);
                 } else {
                     const del = document.createElement('span');
                     del.id = myLibrary[book].id;
                     del.textContent = "✘";
                     newCell.appendChild(del);
 
-                    del.addEventListener("click", function() {addEvent(this, book)});
+                    del.addEventListener("click", deleteBtnFunc);
                 }
-
-                tBody.appendChild(newRow);
                 newRow.appendChild(newCell);
             }
         }
@@ -267,20 +262,13 @@ function generateBookList() {
     }
 }
 
-function addEvent(node, bookIndex) {
-    if (node.type == 'checkbox') {
-        console.log('works');
-        myLibrary[bookIndex].read = node.checked;
-        // Update cachedLibrary
-        localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
-    } else {
-        // Removes book visually and from myLibrary array
-        removeBookFromLibrary(myLibrary[bookIndex].id);
-        // Removes from table list
-        node.parentElement.parentElement.remove();
-        // Re-displays noBookError element when table is emptied
-        if (myLibrary.length  == 0) {
-            noBookError.removeAttribute('hidden');
-        }
+function deleteBtnFunc() {
+    // Removes book visually and from myLibrary array
+    removeBookFromLibrary(this.id);
+    // Removes from table list
+    this.parentElement.parentElement.remove();
+    // Re-displays noBookError element when table is emptied
+    if (myLibrary.length  == 0) {
+        noBookError.removeAttribute('hidden');
     }
 }
