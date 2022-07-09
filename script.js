@@ -138,9 +138,7 @@ function displayBook(bookObj) {
 // BOOK MODAL
 function openBookModal(e) {
     // Reset Book Modal's Content
-    for (let node of dataPropertyList) {
-        node.textContent = '';
-    }
+    for (let node of dataPropertyList) node.textContent = '';
     // Generate Book Modal's content
     generateBookInfo(e.target.id);
     // Open Book Modal
@@ -202,48 +200,43 @@ libraryTitle.addEventListener("click", openLibraryModal);
 function openLibraryModal() {
     // Reset Table's Content
     tBody.textContent = '';
-    // Generate Library Modal's Content
-    generateBookList();
+    // Generate Table of Books if myLibrary isn't empty
+    (myLibrary.length) ? generateBookList() : noBookError.removeAttribute('hidden');
     // Open Library Modal
     libraryModal.classList.add('show-modal');
 }
 
 function generateBookList() {
-    if (myLibrary.length  > 0) {
-        noBookError.setAttribute('hidden', '');
+    noBookError.setAttribute('hidden', ''); 
 
-        myLibrary.forEach(function (book) {
-            const newRow = document.createElement('tr');
-            tBody.appendChild(newRow);
+    myLibrary.forEach(function (book) {
+        const newRow = document.createElement('tr');
+        tBody.appendChild(newRow);
 
-            for(let value = 0; value < 6; value++) {
-                const newCell = document.createElement('td');
-                newRow.appendChild(newCell);
+        for(let value = 0; value < 6; value++) {
+            const newCell = document.createElement('td');
+            newRow.appendChild(newCell);
 
-                if (value < 4) {
-                    newCell.textContent = Object.values(book)[value];
-                } else if (value == 4){
-                    const checkBox = document.createElement('input');
-                    checkBox.setAttribute('type', 'checkbox');
-                    checkBox.id = book.id;
-                    checkBox.checked = book.read;
-                    newCell.appendChild(checkBox);
+            if (value < 4) {
+                newCell.textContent = Object.values(book)[value];
+            } else if (value == 4){
+                const checkBox = document.createElement('input');
+                checkBox.setAttribute('type', 'checkbox');
+                checkBox.id = book.id;
+                checkBox.checked = book.read;
+                newCell.appendChild(checkBox);
 
-                    checkBox.addEventListener('change', changeReadStatus);
-                } else {
-                    const del = document.createElement('span');
-                    del.id = book.id;
-                    del.textContent = "✘";
-                    newCell.appendChild(del);
+                checkBox.addEventListener('change', changeReadStatus);
+            } else {
+                const del = document.createElement('span');
+                del.id = book.id;
+                del.textContent = "✘";
+                newCell.appendChild(del);
 
-                    del.addEventListener("click", deleteBtnFunc);
-                }
+                del.addEventListener("click", deleteBtnFunc);
             }
-        });
-    } else {
-        // Re-displays noBookError element if myLibrary array is empty
-        noBookError.removeAttribute('hidden');
-    }
+        }
+    })    
 }
 
 function deleteBtnFunc() {
@@ -252,7 +245,5 @@ function deleteBtnFunc() {
     // Removes from table list
     this.parentElement.parentElement.remove();
     // Re-displays noBookError element when table is emptied
-    if (myLibrary.length  == 0) {
-        noBookError.removeAttribute('hidden');
-    }
+    if (!myLibrary.length) noBookError.removeAttribute('hidden');
 }
