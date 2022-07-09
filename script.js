@@ -1,8 +1,6 @@
 const addButton = document.querySelector('.add-button');
 const shelves = document.querySelectorAll('.shelf');
 const formModal = document.querySelector(".form-modal");
-const closeButton = document.querySelector(".form-modal .close-button");
-const generalCloseButtons = document.querySelectorAll(".general");
 const addBookForm = document.getElementById("addBookForm");
 const bookModal = document.querySelector(".book-modal");
 const libraryModal = document.querySelector(".library-modal");
@@ -13,6 +11,11 @@ const tableBody = document.querySelector('tbody');
 const noBookError = document.querySelector('.no-book-error');
 const dataPropertyList = document.querySelectorAll('[data-property]');
 const readSwitch = document.querySelector('.switch input');
+
+// const closeButton = document.querySelector(".form-modal .close-button");
+// const generalCloseButtons = document.querySelectorAll(".general");
+// closeButton.addEventListener("click", toggleFormModal);
+// generalCloseButtons.forEach((generalButton) => {generalButton.addEventListener("click", closeModal)});
 
 
 const FULL_SHELF = 22;
@@ -35,14 +38,20 @@ window.addEventListener('load', function () {
 })
 
 // CLOSE BUTTONS
-closeButton.addEventListener("click", toggleFormModal);
-window.addEventListener("click", windowOnClick);
-generalCloseButtons.forEach((generalButton) => {generalButton.addEventListener("click", closeModal)});
+const closeButtons = document.querySelectorAll(".close-button");
 
-function closeModal() {
-    bookModal.classList.remove("show-modal");
-    libraryModal.classList.remove("show-modal");
-}
+closeButtons.forEach((closeButton) => {closeButton.addEventListener("click", function () {
+    switch (this.parentElement.parentElement) {
+        case formModal:
+            toggleFormModal();
+            break;
+        case bookModal:
+        case libraryModal:
+            closeModal();
+    }
+})})
+
+window.addEventListener("click", windowOnClick);
 
 // Any outside window click will close current active modal
 function windowOnClick(e) {
@@ -55,6 +64,12 @@ function windowOnClick(e) {
             closeModal();
     }
 }
+
+function closeModal() {
+    bookModal.classList.remove("show-modal");
+    libraryModal.classList.remove("show-modal");
+}
+
 
 // FORM MODAL
 addButton.addEventListener("click", toggleFormModal);
