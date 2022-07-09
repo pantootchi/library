@@ -29,9 +29,9 @@ if (localStorage.cachedLibrary) {
 window.addEventListener('load', function () {
     for (let i = 0; i < myLibrary.length; i++) {
         // Re-assigns book objects' id from 1
-        myLibrary[i].id = i+1;
-        // Increments bookCounter each time
-        bookCounter = i+1;
+        myLibrary[i].id = bookCounter = i+1;
+        // // Increments bookCounter each time
+        // bookCounter = i+1;
         // Re-displays all book visually
         displayBook(myLibrary[i]);
     }
@@ -43,11 +43,8 @@ window.addEventListener("click", windowOnClick);
 generalCloseButtons.forEach((generalButton) => {generalButton.addEventListener("click", closeModal)});
 
 function closeModal() {
-    if (bookModal.classList.value.includes('show-modal')) {
-        bookModal.classList.remove("show-modal");
-    } else if (libraryModal.classList.value.includes('show-modal')) {
-        libraryModal.classList.remove("show-modal");
-    }
+    bookModal.classList.remove("show-modal");
+    libraryModal.classList.remove("show-modal");
 }
 
 // Any outside window click will close current active modal
@@ -68,9 +65,7 @@ addButton.addEventListener("click", toggleFormModal);
 function toggleFormModal() {
     formModal.classList.toggle("show-modal");
     // Book form resets when Form Modal closes
-    if (!formModal.classList.value.includes('show-modal')) {
-        addBookForm.reset();
-    }
+    if (!formModal.classList.value.includes('show-modal')) addBookForm.reset();
 }
 
 addBookForm.addEventListener("submit", addBookToLibrary);
@@ -122,17 +117,11 @@ function displayBook(bookObj) {
     bookElement.classList.add("book");
     bookElement.setAttribute('id', bookObj.id);
     bookElement.style.backgroundColor = generateRGB();
-
-    // Append new Book element to the DOM
-    for (i = 0; i < shelves.length; i++) {
-        if (shelves[i].children.length != FULL_SHELF) {
-            shelves[i].appendChild(bookElement);
-            break;
-        }
-    }
-
     // Add "click" event listener for book element
     bookElement.addEventListener('click', openBookModal);
+    // Append new Book element to the DOM
+    Array.from(shelves).find(node => node.children.length != FULL_SHELF).appendChild(bookElement);
+
 }
 
 // BOOK MODAL
@@ -146,24 +135,20 @@ function openBookModal(e) {
 }
 
 function generateBookInfo(bookNodeId) {
-    for (let i = 0; i < myLibrary.length; i++) {
-        if(bookNodeId == myLibrary[i].id) {
+    let myBook = myLibrary.find((book) => book.id == bookNodeId);
 
-            for (let node of dataPropertyList) {
-                for (let [key, value] of Object.entries(myLibrary[i])) {
-                    if (node.getAttribute('data-property') === key) {
-                        node.textContent = value;
-                    }
-                }
+    for (let node of dataPropertyList) {
+        for (let [key, value] of Object.entries(myBook)) {
+            if (node.getAttribute('data-property') === key) {
+                node.textContent = value;
             }
-
-            // Display current read value
-            readSwitch.checked = myLibrary[i].read;
-            // Add book ID to the remove button's ID and checkbox's ID
-            removeButton.id = readSwitch.id = myLibrary[i].id;
-            break;
         }
     }
+
+    // Display current read value
+    readSwitch.checked = myBook.read;
+    // Add book ID to the remove button's ID and checkbox's ID
+    removeButton.id = readSwitch.id = myBook.id;
 }
 
 // READ SWITCH BUTTON
