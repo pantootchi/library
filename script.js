@@ -64,8 +64,8 @@ addButton.addEventListener("click", toggleFormModal);
 
 function toggleFormModal() {
     formModal.classList.toggle("show-modal");
-    if (formModal.classList.value.includes('show-modal')) {
-        // Book form resets when FORM MODAL opens
+    if (!formModal.classList.value.includes('show-modal')) {
+        // Book form resets when Form Modal closes
         addBookForm.reset();
     }
 }
@@ -134,7 +134,7 @@ function displayBook(bookObj) {
 
 // BOOK MODAL
 function openBookModal(e) {
-    // Reset Content
+    // Reset Book Modal's Content
     for (let node of dataPropertyList) {
         node.textContent = '';
     }
