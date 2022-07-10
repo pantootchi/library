@@ -12,6 +12,7 @@ const noBookError = document.querySelector('.no-book-error');
 const dataPropertyList = document.querySelectorAll('[data-property]');
 const readSwitch = document.querySelector('.switch input');
 const closeButtons = document.querySelectorAll(".close-button");
+const allModals = document.querySelectorAll('.modal');
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -36,20 +37,12 @@ window.addEventListener('load', function () {
 closeButtons.forEach((closeButton) => {closeButton.addEventListener("click", closeModal)});
 
 window.addEventListener("click", function (e) {
-    switch (e.target) {
-        case formModal:
-        case bookModal:
-        case libraryModal:
-            closeModal();
-    }
+    allModals.forEach((modal) => {if (e.target == modal) closeModal()});
 });
 
 function closeModal() {
-    bookModal.classList.remove("show-modal");
-    libraryModal.classList.remove("show-modal");
-    formModal.classList.remove("show-modal");
+    allModals.forEach((modal) => {modal.classList.remove("show-modal")});
 }
-
 
 // FORM MODAL
 addButton.addEventListener("click", openFormModal);
@@ -113,7 +106,7 @@ function displayBook(bookObj) {
     // Add "click" event listener for book element
     bookElement.addEventListener('click', openBookModal);
     // Append new Book element to the DOM
-    Array.from(shelves).find(node => node.children.length != FULL_SHELF).appendChild(bookElement);
+    Array.from(shelves).find(shelf => shelf.children.length != FULL_SHELF).appendChild(bookElement);
 
 }
 
