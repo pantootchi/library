@@ -113,7 +113,7 @@ function displayBook(bookObj) {
 // BOOK MODAL
 function openBookModal(e) {
     // Reset Book Modal's Content
-    for (let node of dataPropertyList) node.textContent = '';
+    dataPropertyList.forEach((data) => data.textContent = '')
     // Generate Book Modal's content
     generateBookInfo(e.target.id);
     // Open Book Modal
@@ -125,9 +125,7 @@ function generateBookInfo(bookNodeId) {
 
     for (let node of dataPropertyList) {
         for (let [key, value] of Object.entries(myBook)) {
-            if (node.getAttribute('data-property') === key) {
-                node.textContent = value;
-            }
+            if (node.getAttribute('data-property') === key) node.textContent = value;
         }
     }
 
