@@ -11,12 +11,7 @@ const tableBody = document.querySelector('tbody');
 const noBookError = document.querySelector('.no-book-error');
 const dataPropertyList = document.querySelectorAll('[data-property]');
 const readSwitch = document.querySelector('.switch input');
-
-// const closeButton = document.querySelector(".form-modal .close-button");
-// const generalCloseButtons = document.querySelectorAll(".general");
-// closeButton.addEventListener("click", toggleFormModal);
-// generalCloseButtons.forEach((generalButton) => {generalButton.addEventListener("click", closeModal)});
-
+const closeButtons = document.querySelectorAll(".close-button");
 
 const FULL_SHELF = 22;
 let myLibrary = [];
@@ -38,46 +33,32 @@ window.addEventListener('load', function () {
 })
 
 // CLOSE BUTTONS
-const closeButtons = document.querySelectorAll(".close-button");
+closeButtons.forEach((closeButton) => {closeButton.addEventListener("click", closeModal)});
 
-closeButtons.forEach((closeButton) => {closeButton.addEventListener("click", function () {
-    switch (this.parentElement.parentElement) {
-        case formModal:
-            toggleFormModal();
-            break;
-        case bookModal:
-        case libraryModal:
-            closeModal();
-    }
-})})
-
-window.addEventListener("click", windowOnClick);
-
-// Any outside window click will close current active modal
-function windowOnClick(e) {
+window.addEventListener("click", function (e) {
     switch (e.target) {
         case formModal:
-            toggleFormModal();
-            break;
         case bookModal:
         case libraryModal:
             closeModal();
     }
-}
+});
 
 function closeModal() {
     bookModal.classList.remove("show-modal");
     libraryModal.classList.remove("show-modal");
+    formModal.classList.remove("show-modal");
 }
 
 
 // FORM MODAL
-addButton.addEventListener("click", toggleFormModal);
+addButton.addEventListener("click", openFormModal);
 
-function toggleFormModal() {
-    formModal.classList.toggle("show-modal");
-    // Book form resets when Form Modal closes
-    if (!formModal.classList.value.includes('show-modal')) addBookForm.reset();
+function openFormModal() {
+    // Resets Book Form
+    addBookForm.reset();
+    // Opens Form Modal
+    formModal.classList.add("show-modal");
 }
 
 addBookForm.addEventListener("submit", addBookToLibrary);
@@ -94,7 +75,7 @@ function addBookToLibrary(e) {
     // Saves myLibrary array to local storage called cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
     // Closes Form Modal
-    toggleFormModal();
+    closeModal();
 }
 
 function Book (title, author, pages, id, read) {
