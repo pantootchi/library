@@ -149,18 +149,18 @@ function changeReadStatus() {
 // REMOVE BUTTON
 removeButton.addEventListener("click", function() {
     // Removes book visually and from myLibrary array
-    removeBookFromLibrary(this.id);
+    removeBookFromLibrary.call(this);
     // Close Book Modal
     closeModal();
 })
 
-function removeBookFromLibrary(associatedId) {
+function removeBookFromLibrary() {
     // Removes book object from myLibrary array
-    myLibrary.splice(myLibrary.findIndex((book) => book.id == associatedId), 1);
+    myLibrary.splice(myLibrary.findIndex((book) => book.id == this.id), 1);
     // Update cachedLibrary
     localStorage.setItem("cachedLibrary", JSON.stringify(myLibrary));
     // Removes book visually
-    document.querySelector(`.book[id="${associatedId}"]`).remove();
+    document.querySelector(`.book[id="${this.id}"]`).remove();
 }
 
 // LIBRARY MODAL
@@ -210,7 +210,7 @@ function generateBookList() {
 
 function deleteBtnFunc() {
     // Removes book visually and from myLibrary array
-    removeBookFromLibrary(this.id);
+    removeBookFromLibrary.call(this);
     // Removes from table list
     this.parentElement.parentElement.remove();
     // Re-displays noBookError element when table is emptied
